@@ -1,13 +1,13 @@
 package ru.improve.findTechnique;
 
-import ru.improve.functions.CubFunction;
+import ru.improve.functions.Function;
 
 public class FindEqualSolveOnInfinityLine {
 
-    public double find(double leftBorder, double rightBorder, CubFunction cubFunc, double de, double e) {
-        if (leftBorder == Double.MAX_VALUE && rightBorder == Double.MAX_VALUE) {
+    public double find(double leftBorder, double rightBorder, Function cubFunc, double de, double e) {
+        if (leftBorder == Double.MIN_VALUE && rightBorder == Double.MAX_VALUE) {
             throw new RuntimeException("infinity line");
-        } else if (leftBorder == Double.MAX_VALUE) {
+        } else if (leftBorder == Double.MIN_VALUE) {
             goToLeft(rightBorder, cubFunc, de, e);
         } else if (rightBorder == Double.MAX_VALUE) {
             goToRight(leftBorder, cubFunc, de, e);
@@ -15,7 +15,7 @@ public class FindEqualSolveOnInfinityLine {
         return 0;
     }
 
-    private double goToLeft(double rightBorder, CubFunction cubFunc, double de, double e) {
+    private double goToLeft(double rightBorder, Function cubFunc, double de, double e) {
         double prevShift = rightBorder;
         double shift = -de;
         while (cubFunc.value(shift) > 0) {
@@ -27,7 +27,7 @@ public class FindEqualSolveOnInfinityLine {
         return dichotomy.doDichotomy(cubFunc, shift, prevShift, e, 0);
     }
 
-    private double goToRight(double leftBorder, CubFunction cubFunc, double de, double e) {
+    private double goToRight(double leftBorder, Function cubFunc, double de, double e) {
         double prevShift = leftBorder;
         double shift = de;
         while (cubFunc.value(shift) > 0) {

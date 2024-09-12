@@ -19,7 +19,7 @@ public class KubSolve implements EquationSolve {
         if (cubFuncValue == 0) {
             solveNumber.add((double) 0);
         } else if (cubFuncValue > 0) {
-            findSolve.find(Double.MAX_VALUE, 0, cubFunc, de, e);
+            findSolve.find(Double.MIN_VALUE, 0, cubFunc, de, e);
         } else {
             findSolve.find(0, Double.MAX_VALUE, cubFunc, de, e);
         }
@@ -36,7 +36,10 @@ public class KubSolve implements EquationSolve {
         double alpha = quadSolveList.get(0);
         double beta = quadSolveList.get(1);
 
+        FindEqualSolveOnInfinityLine findSolve = new FindEqualSolveOnInfinityLine();
 
+        double solveOnInfToAlpha = findSolve.find(Double.MIN_VALUE, alpha, cubFunc, de, e);
+        double solveOnBetaToInf = findSolve.find(beta, Double.MAX_VALUE, cubFunc, de, e);
 
         return solveNumber;
     }
