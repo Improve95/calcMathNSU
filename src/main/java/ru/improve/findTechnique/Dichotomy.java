@@ -9,7 +9,7 @@ public class Dichotomy {
                               double epsilon, double equalNumber, boolean functionIsIncrease) {
 
         double reverseFuncValue = 1;
-        if (functionIsIncrease) {
+        if (!functionIsIncrease) {
             reverseFuncValue = -1;
         }
 
