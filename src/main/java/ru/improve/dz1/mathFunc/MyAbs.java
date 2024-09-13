@@ -1,4 +1,4 @@
-package ru.improve.mathFunc;
+package ru.improve.dz1.mathFunc;
 
 public class MyAbs {
 

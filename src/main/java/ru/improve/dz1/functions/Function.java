@@ -1,4 +1,4 @@
-package ru.improve.functions;
+package ru.improve.dz1.functions;
 
 public interface Function {
 

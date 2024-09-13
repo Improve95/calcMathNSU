@@ -1,7 +1,7 @@
 package ru.improve;
 
-import ru.improve.equationSolve.KubSolve;
-import ru.improve.functions.CubFunction;
+import ru.improve.dz1.equationSolve.KubSolve;
+import ru.improve.dz1.functions.CubFunction;
 
 import java.util.List;
 

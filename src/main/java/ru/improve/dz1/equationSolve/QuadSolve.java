@@ -1,8 +1,8 @@
-package ru.improve.equationSolve;
+package ru.improve.dz1.equationSolve;
 
-import ru.improve.functions.Function;
-import ru.improve.functions.QuadFunction;
-import ru.improve.mathFunc.Discriminant;
+import ru.improve.dz1.functions.Function;
+import ru.improve.dz1.functions.QuadFunction;
+import ru.improve.dz1.mathFunc.Discriminant;
 
 import java.util.List;
 

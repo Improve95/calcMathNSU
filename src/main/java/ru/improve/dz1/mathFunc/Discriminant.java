@@ -1,6 +1,6 @@
-package ru.improve.mathFunc;
+package ru.improve.dz1.mathFunc;
 
-import ru.improve.functions.QuadFunction;
+import ru.improve.dz1.functions.QuadFunction;
 
 public class Discriminant {
 

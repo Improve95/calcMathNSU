@@ -1,6 +1,6 @@
-package ru.improve.equationSolve;
+package ru.improve.dz1.equationSolve;
 
-import ru.improve.functions.Function;
+import ru.improve.dz1.functions.Function;
 
 import java.util.List;
 

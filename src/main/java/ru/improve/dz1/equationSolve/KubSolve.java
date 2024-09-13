@@ -1,12 +1,12 @@
-package ru.improve.equationSolve;
+package ru.improve.dz1.equationSolve;
 
-import ru.improve.findTechnique.Dichotomy;
-import ru.improve.functions.Function;
-import ru.improve.mathFunc.Discriminant;
-import ru.improve.findTechnique.FindEqualSolveOnInfinityLine;
-import ru.improve.functions.CubFunction;
-import ru.improve.functions.QuadFunction;
-import ru.improve.mathFunc.MyAbs;
+import ru.improve.dz1.findTechnique.FindEqualSolveOnInfinityLine;
+import ru.improve.dz1.functions.CubFunction;
+import ru.improve.dz1.findTechnique.Dichotomy;
+import ru.improve.dz1.functions.Function;
+import ru.improve.dz1.mathFunc.Discriminant;
+import ru.improve.dz1.functions.QuadFunction;
+import ru.improve.dz1.mathFunc.MyAbs;
 
 import java.util.ArrayList;
 import java.util.List;

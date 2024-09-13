@@ -1,7 +1,7 @@
-package ru.improve.findTechnique;
+package ru.improve.dz1.findTechnique;
 
-import ru.improve.functions.Function;
-import ru.improve.mathFunc.MyAbs;
+import ru.improve.dz1.functions.Function;
+import ru.improve.dz1.mathFunc.MyAbs;
 
 public class Dichotomy {
 
