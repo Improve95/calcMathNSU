@@ -1,15 +1,34 @@
 package ru.improve.equationSolve;
 
+import ru.improve.findTechnique.Dichotomy;
 import ru.improve.functions.Function;
 import ru.improve.mathFunc.Discriminant;
 import ru.improve.findTechnique.FindEqualSolveOnInfinityLine;
 import ru.improve.functions.CubFunction;
 import ru.improve.functions.QuadFunction;
+import ru.improve.mathFunc.MyAbs;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class KubSolve implements EquationSolve {
+
+    public List<Double> solve(Function function, double de, double e) {
+        CubFunction cubFunction = (CubFunction) function;
+        double a = cubFunction.getA();
+        double b = cubFunction.getB();
+        double c = cubFunction.getC();
+
+        CubFunction cubFunc = new CubFunction(a, b, c);
+        QuadFunction quadFunc = new QuadFunction(1, b - 1, c - 1);
+
+        double discriminant = Discriminant.find(quadFunc);
+        if (discriminant < 0) {
+            return discriminantLessZeroWay(cubFunc, de, e);
+        } else {
+            return discriminantMoreOrEqualsZeroWay(cubFunc, quadFunc, de, e);
+        }
+    }
 
     private List<Double> discriminantLessZeroWay(CubFunction cubFunc, double de, double e) {
         List<Double> solveNumber = new ArrayList<>();
@@ -38,42 +57,44 @@ public class KubSolve implements EquationSolve {
 
         FindEqualSolveOnInfinityLine findSolve = new FindEqualSolveOnInfinityLine();
 
-        double solveOnInfToAlpha = findSolve.find(Double.MIN_VALUE, alpha, cubFunc, de, e);
-        double solveOnBetaToInf = findSolve.find(beta, Double.MAX_VALUE, cubFunc, de, e);
+        double funcValueByAlpha = cubFunc.value(alpha);
+        double funcValueByBeta = cubFunc.value(beta);
+        if (funcValueByAlpha > e && funcValueByBeta > e) {
+
+            double solveOnInfToAlpha = findSolve.find(Double.MIN_VALUE, alpha, cubFunc, de, e);
+            solveNumber.add(solveOnInfToAlpha);
+
+        } else if (funcValueByAlpha < -e && funcValueByBeta < -e) {
+
+            double solveOnBetaToInf = findSolve.find(beta, Double.MAX_VALUE, cubFunc, de, e);
+            solveNumber.add(solveOnBetaToInf);
+
+        } else if (funcValueByAlpha > e && MyAbs.inInterval(funcValueByAlpha, 0, e)) {
+
+            double solveOnInfToAlpha = findSolve.find(Double.MIN_VALUE, alpha, cubFunc, de, e);
+            solveNumber.addAll(List.of(beta, beta, solveOnInfToAlpha));
+
+        } else if (MyAbs.inInterval(funcValueByAlpha, 0, e) && funcValueByBeta < -e) {
+
+            double solveOnBetaToInf = findSolve.find(beta, Double.MAX_VALUE, cubFunc, de, e);
+            solveNumber.addAll(List.of(alpha, alpha, solveOnBetaToInf));
+
+        } else if (funcValueByAlpha > e && funcValueByBeta < -e) {
+
+            double solveOnInfToAlpha = findSolve.find(Double.MIN_VALUE, alpha, cubFunc, de, e);
+            double solveOnBetaToInf = findSolve.find(beta, Double.MAX_VALUE, cubFunc, de, e);
+
+            Dichotomy dichotomy = new Dichotomy();
+            double solveOnAlphaToBeta = dichotomy.doDichotomy(cubFunc, alpha, beta, e, 0);
+
+            solveNumber.addAll(List.of(solveOnInfToAlpha, solveOnBetaToInf, solveOnAlphaToBeta));
+
+        } else {
+
+            solveNumber.add((alpha + beta) / 2);
+
+        }
 
         return solveNumber;
-    }
-
-    /*private List<Double> way1(CubFunction cubFunc, double de, double e, double alpha, double beta) {
-        return null;
-    }
-    private List<Double> way2() {
-        return null;
-    }
-    private List<Double> way3() {
-        return null;
-    }
-    private List<Double> way4() {
-        return null;
-    }
-    private List<Double> way5() {
-        return null;
-    }*/
-
-    public List<Double> solve(Function function, double de, double e) {
-        CubFunction cubFunction = (CubFunction) function;
-        double a = cubFunction.getA();
-        double b = cubFunction.getB();
-        double c = cubFunction.getC();
-
-        CubFunction cubFunc = new CubFunction(a, b, c);
-        QuadFunction quadFunc = new QuadFunction(1, b - 1, c - 1);
-
-        double discriminant = Discriminant.find(quadFunc);
-        if (discriminant < 0) {
-            return discriminantLessZeroWay(cubFunc, de, e);
-        } else {
-            return discriminantMoreOrEqualsZeroWay(cubFunc, quadFunc, de, e);
-        }
     }
 }
