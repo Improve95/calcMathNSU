@@ -25,8 +25,8 @@ public class QuadSolve implements EquationSolve {
             double solve = -b / (2 * a);
             return List.of(solve);
         } else {
-            double solve2 = -b - Math.sqrt(discriminant) / (2 * a);
-            double solve1 = -b + Math.sqrt(discriminant) / (2 * a);
+            double solve1 = (-b - Math.sqrt(discriminant)) / (2 * a);
+            double solve2 = (-b + Math.sqrt(discriminant)) / (2 * a);
             return List.of(solve1, solve2);
         }
     }

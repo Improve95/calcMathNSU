@@ -6,18 +6,23 @@ import ru.improve.mathFunc.MyAbs;
 public class Dichotomy {
 
     public double doDichotomy(Function function, double leftBorder, double rightBorder,
-                              double epsilon, double equalNumber) {
+                              double epsilon, double equalNumber, boolean functionIsIncrease) {
 
-        double currentX = (rightBorder - leftBorder) / 2;
+        double reverseFuncValue = 1;
+        if (functionIsIncrease) {
+            reverseFuncValue = -1;
+        }
+
+        double currentX = (rightBorder + leftBorder) / 2;
 
         while (true) {
-            double funcValue = function.value(currentX);
+            double funcValue = function.value(currentX) * reverseFuncValue;
             if (MyAbs.inInterval(funcValue, equalNumber, epsilon)) {
                 return currentX;
             } else if (funcValue > equalNumber) {
-                currentX = (rightBorder - currentX) / 2;
+                currentX = (leftBorder + currentX) / 2;
             } else {
-                currentX = (leftBorder - currentX) / 2;
+                currentX = (rightBorder + currentX) / 2;
             }
         }
     }

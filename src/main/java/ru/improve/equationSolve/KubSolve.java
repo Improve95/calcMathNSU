@@ -14,13 +14,9 @@ import java.util.List;
 public class KubSolve implements EquationSolve {
 
     public List<Double> solve(Function function, double de, double e) {
-        CubFunction cubFunction = (CubFunction) function;
-        double a = cubFunction.getA();
-        double b = cubFunction.getB();
-        double c = cubFunction.getC();
+        CubFunction cubFunc = (CubFunction) function;
 
-        CubFunction cubFunc = new CubFunction(a, b, c);
-        QuadFunction quadFunc = new QuadFunction(1, b - 1, c - 1);
+        QuadFunction quadFunc = new QuadFunction(3, cubFunc.getB() * 2, cubFunc.getC());
 
         double discriminant = Discriminant.find(quadFunc);
         if (discriminant < 0) {
@@ -85,7 +81,7 @@ public class KubSolve implements EquationSolve {
             double solveOnBetaToInf = findSolve.find(beta, Double.MAX_VALUE, cubFunc, de, e);
 
             Dichotomy dichotomy = new Dichotomy();
-            double solveOnAlphaToBeta = dichotomy.doDichotomy(cubFunc, alpha, beta, e, 0);
+            double solveOnAlphaToBeta = dichotomy.doDichotomy(cubFunc, alpha, beta, e, 0, false);
 
             solveNumber.addAll(List.of(solveOnInfToAlpha, solveOnBetaToInf, solveOnAlphaToBeta));
 

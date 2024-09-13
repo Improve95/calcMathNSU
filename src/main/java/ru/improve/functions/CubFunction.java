@@ -10,8 +10,9 @@ public class CubFunction implements Function {
     private final double a;
     private final double b;
     private final double c;
+    private final double d;
 
     public double value(double x) {
-        return Math.pow(x, 3) + a * Math.pow(x, 2) + b * Math.pow(x, 1) + c;
+        return a * Math.pow(x, 3) + b * Math.pow(x, 2) + c * Math.pow(x, 1) + d;
     }
 }

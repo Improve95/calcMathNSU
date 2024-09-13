@@ -8,11 +8,10 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
 
-        CubFunction cubFunction = new CubFunction(1, 2, 3);
+        CubFunction cubFunction = new CubFunction(1, 2, -1, -2);
 
         KubSolve kubSolve = new KubSolve();
-
-        List<Double> solveList = kubSolve.solve(cubFunction, 4, 5);
+        List<Double> solveList = kubSolve.solve(cubFunction, 0.3, 0.5);
         for (double solve : solveList) {
             System.out.print(solve + " ");
         }
