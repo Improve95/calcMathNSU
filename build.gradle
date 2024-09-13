@@ -1,9 +1,22 @@
 plugins {
     id 'java'
+    id 'application'
 }
 
 group 'ru.improve'
-version '0.0.1'
+version '1.0'
+
+application {
+    mainClass = 'ru.improve.Main'
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'ru.improve.Main'
+        )
+    }
+}
 
 java {
     toolchain {
