@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
-        try (InputStream inputStream = Main.class.getResourceAsStream("dav.txt");
+        try (InputStream inputStream = Main.class.getResourceAsStream("../../dav.txt");
              BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
 
             KubSolve kubSolve = new KubSolve();
