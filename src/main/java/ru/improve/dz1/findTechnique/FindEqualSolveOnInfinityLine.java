@@ -20,7 +20,9 @@ public class FindEqualSolveOnInfinityLine {
         double prevShift = rightBorder;
         double shift = rightBorder - (de * power);
 
-        while (cubFunc.value(shift) > 0) {
+        double funcValue = cubFunc.value(shift);
+        while (funcValue > 0) {
+            funcValue = cubFunc.value(shift);
             prevShift = shift;
             shift -= de * power;
             power++;

@@ -16,7 +16,7 @@ public class KubSolve implements EquationSolve {
     public List<Double> solve(Function function, double de, double e) {
         CubFunction cubFunc = (CubFunction) function;
 
-        QuadFunction quadFunc = new QuadFunction(3, cubFunc.getB() * 2, cubFunc.getC());
+        QuadFunction quadFunc = new QuadFunction(3 * cubFunc.getA(), 2 * cubFunc.getB(), cubFunc.getC());
 
         double discriminant = Discriminant.find(quadFunc);
         if (discriminant < 0) {
