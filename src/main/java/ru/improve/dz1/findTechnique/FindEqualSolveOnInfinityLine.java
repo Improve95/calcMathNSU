@@ -20,13 +20,13 @@ public class FindEqualSolveOnInfinityLine {
         double prevShift = rightBorder;
         double shift = rightBorder - (de * power);
 
-        double funcValue = cubFunc.value(shift);
-        while (funcValue > 0) {
-            funcValue = cubFunc.value(shift);
+        double funcValue;
+        do {
             prevShift = shift;
             shift -= de * power;
+            funcValue = cubFunc.value(shift);
             power++;
-        }
+        } while (funcValue > 0);
 
         Dichotomy dichotomy = new Dichotomy();
         return dichotomy.doDichotomy(cubFunc, shift, prevShift, e, 0, true);
