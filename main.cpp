@@ -1,6 +1,7 @@
 #include <iostream>
 #include <math.h>
 #include <vector>
+#include <limits>
 
 using namespace std;
 
@@ -18,7 +19,7 @@ private:
     double c;
 
 public:
-    QuadFunction(double a, double b, double c, double d) {
+    QuadFunction(double a, double b, double c) {
         this->a = a;
         this->b = b;
         this->c = c;
@@ -41,8 +42,7 @@ public:
     }
 };
 
-
-class CubFunction : Function {
+class CubFunction : public Function {
 
 private:
     double a;
@@ -110,15 +110,153 @@ double doDichotomy(Function function, double leftBorder, double rightBorder,
     }
 }
 
-vector<double> solveQuadEquation(double a, double b, double c) {
+double goToLeft(double rightBorder, Function cubFunc, double de, double e) {
+    int power = 1;
+    double prevShift = rightBorder;
+    double shift = rightBorder - (de * power);
 
+    double funcValue = cubFunc.value(shift);
+    while (funcValue > 0) {
+        funcValue = cubFunc.value(shift);
+        prevShift = shift;
+        shift -= de * power;
+        power++;
+    }
+
+    return doDichotomy(cubFunc, shift, prevShift, e, 0, true);
 }
 
-vector<double> solveCubEquation(double a, double b, double c, double d) {
+double goToRight(double leftBorder, Function cubFunc, double de, double e) {
+    int power = 1;
+    double prevShift = leftBorder;
+    double shift = leftBorder + (de * power);
 
+    while (cubFunc.value(shift) < 0) {
+        prevShift = shift;
+        shift += de * power;
+        power++;
+    }
+
+    return doDichotomy(cubFunc, prevShift, shift, e, 0, true);
 }
 
+double findOnInfinityLine(double leftBorder, double rightBorder, Function cubFunc, double de, double e) {
+    double minDouble = numeric_limits<double>::min();
+    double maxDouble = numeric_limits<double>::max();
 
+    if (leftBorder == minDouble && rightBorder == maxDouble) {
+        cout << "exception" << endl;
+        return 0;
+    } else if (leftBorder == minDouble) {
+        return goToLeft(rightBorder, cubFunc, de, e);
+    } else if (rightBorder == maxDouble) {
+        return goToRight(leftBorder, cubFunc, de, e);
+    }
+}
+
+vector<double> solveQuadEquation(QuadFunction quadFunction) {
+
+    double discriminant = findDiscriminant(quadFunction);
+
+    if (discriminant < 0) return vector<double>();
+
+    double a = quadFunction.getA();
+    double b = quadFunction.getB();
+
+    if (discriminant == 0) {
+
+        double root = -b / (2 * a);
+        return vector<double>(root);
+
+    } else {
+
+        double root1 = (-b - sqrt(discriminant)) / (2 * a);
+        double root2 = (-b + sqrt(discriminant)) / (2 * a);
+        return vector<double>(root1, root2);
+
+    }
+}
+
+vector<double> discriminantLessZeroWay(CubFunction cubFunc, double de, double e) {
+    vector<double> rootList;
+
+    double cubFuncValue = cubFunc.value(0);
+    if (cubFuncValue == 0) {
+        rootList.push_back(0);
+    } else if (cubFuncValue > 0) {
+        findOnInfinityLine(numeric_limits<double>::min(), 0, cubFunc, de, e);
+    } else {
+        findOnInfinityLine(0, numeric_limits<double>::max(), cubFunc, de, e);
+    }
+
+    return rootList;
+}
+
+vector<double> discriminantMoreOrEqualsZeroWay(CubFunction cubFunc, QuadFunction quadFunc, double de, double e) {
+    vector<double> rootList;
+
+    vector<double> quadRootList = solveQuadEquation(quadFunc);
+
+    double alpha = quadRootList[0];
+    double beta = quadRootList[1];
+
+    double minDouble = numeric_limits<double>::min();
+    double maxDouble = numeric_limits<double>::max();
+
+    double funcValueByAlpha = cubFunc.value(alpha);
+    double funcValueByBeta = cubFunc.value(beta);
+
+    vector<double> cubRootList;
+    if (funcValueByAlpha > e && funcValueByBeta > e) {
+
+        double solveOnInfToAlpha = findOnInfinityLine(minDouble, alpha, cubFunc, de, e);
+        cubRootList.push_back(solveOnInfToAlpha);
+
+    } else if (funcValueByAlpha < -e && funcValueByBeta < -e) {
+
+        double solveOnBetaToInf = findOnInfinityLine(beta, maxDouble, cubFunc, de, e);
+        cubRootList.push_back(solveOnBetaToInf);
+
+    } else if (funcValueByAlpha > e && isInInterval(funcValueByAlpha, 0, e)) {
+
+        double solveOnInfToAlpha = findOnInfinityLine(minDouble, alpha, cubFunc, de, e);
+        cubRootList.insert(cubRootList.end(), {beta, beta, solveOnInfToAlpha});
+
+    } else if (isInInterval(funcValueByAlpha, 0, e) && funcValueByBeta < -e) {
+
+        double solveOnBetaToInf = findOnInfinityLine(beta, maxDouble, cubFunc, de, e);
+        cubRootList.insert(cubRootList.end(), {alpha, alpha, solveOnBetaToInf});
+
+    } else if (funcValueByAlpha > e && funcValueByBeta < -e) {
+
+        double solveOnInfToAlpha = findOnInfinityLine(minDouble, alpha, cubFunc, de, e);
+        double solveOnBetaToInf = findOnInfinityLine(beta, maxDouble, cubFunc, de, e);
+
+        double solveOnAlphaToBeta = doDichotomy(cubFunc, alpha, beta, e, 0, false);
+
+        cubRootList.insert(cubRootList.end(), {solveOnInfToAlpha, solveOnBetaToInf, solveOnAlphaToBeta});
+
+    } else {
+
+        cubRootList.push_back((alpha + beta) / 2);
+
+    }
+
+    return cubRootList;
+}
+
+vector<double> solveCubEquation(Function function, double de, double e) {
+    CubFunction *cubFunc = (CubFunction *) &function;
+
+    QuadFunction quadFunc = QuadFunction(3 * cubFunc->getA(), 2 * cubFunc->getB(), cubFunc->getC());
+
+    double discriminant = findDiscriminant(quadFunc);
+    if (discriminant < 0) {
+        return discriminantLessZeroWay(*cubFunc, de, e);
+    } else {
+        return discriminantMoreOrEqualsZeroWay(*cubFunc, quadFunc, de, e);
+    }
+}
 
 int main() {
 
