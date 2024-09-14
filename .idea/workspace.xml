@@ -1,27 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="CMakeReloadState">
+    <option name="reloaded" value="true" />
+  </component>
+  <component name="CMakeRunConfigurationManager">
+    <generated>
+      <config projectName="calcMath" targetName="calcMath" />
+    </generated>
+  </component>
   <component name="CMakeSettings">
     <configurations>
       <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" />
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cf143652-6a78-45ec-a8cd-3b2680cee935" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/improve/Main.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/improve/dz1/equationSolve/EquationSolve.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/improve/dz1/equationSolve/KubSolve.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/improve/dz1/equationSolve/QuadSolve.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/improve/dz1/findTechnique/Dichotomy.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/improve/dz1/findTechnique/FindEqualSolveOnInfinityLine.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/improve/dz1/functions/CubFunction.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/improve/dz1/functions/Function.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/improve/dz1/functions/QuadFunction.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/improve/dz1/mathFunc/Discriminant.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/improve/dz1/mathFunc/MyAbs.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/dav.txt" beforeDir="false" />
+    <list default="true" id="0e09bacb-0095-4b81-9d44-183953669618" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/calcMath.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/calcMath.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,28 +27,55 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectId" id="2m3BOlWwZHlltEC1ZrtCTlPDycK" />
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectApplicationVersion">
+    <option name="ide" value="CLion" />
+    <option name="majorVersion" value="2022" />
+    <option name="minorVersion" value="1.3" />
+  </component>
+  <component name="ProjectId" id="2m3Bh1aSOVtiMTidrCpXxgv14VH" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
     "WebServerToolWindowFactoryState": "false",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="calcMath" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="calcMath" TARGET_NAME="calcMath" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="calcMath" RUN_TARGET_NAME="calcMath">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="cf143652-6a78-45ec-a8cd-3b2680cee935" name="Changes" comment="" />
-      <created>1726295350024</created>
+      <changelist id="0e09bacb-0095-4b81-9d44-183953669618" name="Changes" comment="" />
+      <created>1726295496995</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1726295350024</updated>
+      <updated>1726295496995</updated>
+      <workItem from="1726295499549" duration="589000" />
     </task>
     <servers />
   </component>
