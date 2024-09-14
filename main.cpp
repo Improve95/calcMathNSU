@@ -2,7 +2,6 @@
 #include <math.h>
 #include <vector>
 #include <limits>
-#include <vector>
 #include <fstream>
 #include <sstream>
 
@@ -280,23 +279,21 @@ int main() {
 
     string line;
     double b, c, d, de, e;
-
-//    for (int i = 0; i < 1; i++) {
-    while (std::getline(fileIn, line)) {
-        getline(fileIn, line);
+    while (getline(fileIn, line)) {
         istringstream iss(line);
         iss >> b >> c >> d >> de >> e;
 
         CubFunction cubFunction = CubFunction(1, b, c, d);
         vector<double> rootList = solveCubEquation(cubFunction, de, e);
 
-        cout << rootList.size() << endl << "roots: ";
+        printf("Equal: a = %lf, b = %lf, c = %lf, d = %lf, de = %lf, e = %lf\n", 1.0, b, c, d, de, e);
+        cout << "root number: " << rootList.size() << endl << "roots: ";
         for (double root : rootList) {
-            cout << root << " ";
+            printf("%lf ", root);
         }
         cout << endl << "func value in root: ";
         for (double root : rootList) {
-            cout << cubFunction.value(root) << " ";
+            printf("%lf ", cubFunction.value(root));
         }
         cout << endl << endl;
     }
