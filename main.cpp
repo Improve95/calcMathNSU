@@ -86,16 +86,8 @@ double findDiscriminant(QuadFunction quadFunction) {
 }
 
 bool isInInterval(double value, double equal, double epsilon) {
-    return (value + epsilon >= equal && value <= equal) ||
-           (value - epsilon <= equal && value >= equal);
-}
-
-bool argIsInInterval(Function &function, double x, double equal, double epsilon, double reverseFuncValue) {
-    double functionValue = function.value(x) * reverseFuncValue;
-    double functionValuePlusEpsilon = function.value(x + epsilon) * reverseFuncValue;
-    double functionValueMinusEpsilon = function.value(x - epsilon) * reverseFuncValue;
-    return (functionValuePlusEpsilon >= equal && functionValue <= equal) ||
-           (functionValueMinusEpsilon <= equal && functionValue >= equal);
+    return (value >= equal && value <= equal + epsilon) ||
+            (value <= equal && value >= equal - epsilon);
 }
 
 double doDichotomy(Function &function, double leftBorder, double rightBorder,
@@ -105,14 +97,14 @@ double doDichotomy(Function &function, double leftBorder, double rightBorder,
 
     while (true) {
         double funcValue = function.value(currentX) * reverseFuncValue;
-        if (argIsInInterval(function, currentX, equalNumber, epsilon, reverseFuncValue)) {
+        if (isInInterval(funcValue, equalNumber, epsilon)) {
             return currentX;
         } else if (funcValue > equalNumber) {
             rightBorder = currentX;
-            currentX = (leftBorder + currentX) / 2;
+            currentX = (leftBorder + currentX) / 2.0;
         } else {
             leftBorder = currentX;
-            currentX = (rightBorder + currentX) / 2;
+            currentX = (rightBorder + currentX) / 2.0;
         }
     }
 }
