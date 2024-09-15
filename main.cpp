@@ -199,7 +199,10 @@ vector<double> discriminantMoreOrEqualsZeroWay(CubFunction cubFunc, QuadFunction
     vector<double> rootList;
 
     vector<double> quadRootList = solveQuadEquation(quadFunc);
-    if (quadRootList.size() == 0) return vector<double>(0);
+    if (quadRootList.size() == 0) {
+        cerr << "discriminant less zero" << endl;
+        throw exception();
+    }
 
     double alpha = quadRootList[0];
     double beta = quadRootList[1];
@@ -268,7 +271,8 @@ int main() {
     FILE *fileOut = fopen("res.txt", "w");
 
     if (!fileIn.is_open() || fileOut == NULL) {
-        throw "file cannot open";
+        cerr <<  "file cannot open" << endl;
+        throw exception();
     }
 
     string line;
