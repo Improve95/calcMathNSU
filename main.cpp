@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdio.h>
 #include <math.h>
 #include <vector>
 #include <limits>
@@ -77,7 +78,7 @@ public:
     }
 
     virtual double value(double x) {
-        return a * pow(x, 3) + b * pow(x, 2) + c * x + d;
+        return a * x * x * x + b * x * x + c * x + d;
     }
 };
 
@@ -97,7 +98,7 @@ double doDichotomy(Function &function, double leftBorder, double rightBorder,
 
     while (true) {
         double funcValue = function.value(currentX) * reverseFuncValue;
-        if (isInInterval(funcValue, equalNumber, epsilon)) {
+         if (isInInterval(funcValue, equalNumber, epsilon)) {
             return currentX;
         } else if (funcValue > equalNumber) {
             rightBorder = currentX;
@@ -264,9 +265,10 @@ vector<double> solveCubEquation(Function &function, double de, double e) {
 int main() {
     fstream fileIn;
     fileIn.open("dav.txt", fstream::in);
-    if (!fileIn.is_open()) {
-        cout << "file cannot open" << endl;
-        return -1;
+    FILE *fileOut = fopen("res.txt", "w");
+
+    if (!fileIn.is_open() || fileOut == NULL) {
+        throw "file cannot open";
     }
 
     string line;
@@ -278,16 +280,16 @@ int main() {
         CubFunction cubFunction = CubFunction(1, b, c, d);
         vector<double> rootList = solveCubEquation(cubFunction, de, e);
 
-        printf("Equal: a = %lf, b = %lf, c = %lf, d = %lf, de = %lf, e = %lf\n", 1.0, b, c, d, de, e);
-        cout << "root number: " << rootList.size() << endl << "roots: ";
+        fprintf(fileOut, "Equal: a = %lf, b = %lf, c = %lf, d = %lf, de = %lf, e = %lf\n", 1.0, b, c, d, de, e);
+        fprintf(fileOut, "root number: %d\nroots: ", rootList.size());
         for (double root : rootList) {
-            printf("%lf ", root);
+            fprintf(fileOut, "%lf ", root);
         }
-        cout << endl << "func value in root: ";
+        fprintf(fileOut, "\nfunc value in root: ");
         for (double root : rootList) {
-            printf("%lf ", cubFunction.value(root));
+            fprintf(fileOut, "%lf ", abs(cubFunction.value(root)));
         }
-        cout << endl << endl;
+        fprintf(fileOut, "\n\n");
     }
 
     fileIn.close();
