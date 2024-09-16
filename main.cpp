@@ -78,7 +78,7 @@ public:
     }
 
     virtual double value(double x) {
-        return a * x * x * x + b * x * x + c * x + d;
+        return a * pow(x, 3) + b * pow(x, 2) + c * x + d;
     }
 };
 
@@ -89,7 +89,6 @@ double findDiscriminant(QuadFunction quadFunction) {
 bool isInInterval(double value, double equal, double epsilon) {
     return (value >= equal && value <= equal + epsilon) ||
             (value <= equal && value >= equal - epsilon);
-//    return fabs(value) < epsilon;
 }
 
 double doDichotomy(Function &function, double leftBorder, double rightBorder,
@@ -99,7 +98,8 @@ double doDichotomy(Function &function, double leftBorder, double rightBorder,
 
     while (true) {
         double funcValue = function.value(currentX) * reverseFuncValue;
-         if (isInInterval(funcValue, equalNumber, epsilon)) {
+         if (isInInterval(funcValue, equalNumber, epsilon) ||
+                fabs(function.value(leftBorder) - function.value(rightBorder)) <= 10e-14) {
             return currentX;
         } else if (funcValue > equalNumber) {
             rightBorder = currentX;
@@ -112,7 +112,6 @@ double doDichotomy(Function &function, double leftBorder, double rightBorder,
 }
 
 double goToLeft(double rightBorder, Function &function, double de, double e) {
-//    int power = 1;
     double prevShift;
     double shift = rightBorder;
     double funcValue;
