@@ -5,6 +5,9 @@
 #include <limits>
 #include <fstream>
 #include <sstream>
+#include <regex>
+#include <cstddef>
+#include <string>
 
 using namespace std;
 
@@ -78,7 +81,7 @@ public:
     }
 
     virtual double value(double x) {
-        return a * x * x * x + b * x * x + c * x + d;
+        return a * pow(x, 3) + b * pow(x, 2) + c * x + d;
     }
 };
 
@@ -89,7 +92,6 @@ double findDiscriminant(QuadFunction quadFunction) {
 bool isInInterval(double value, double equal, double epsilon) {
     return (value >= equal && value <= equal + epsilon) ||
             (value <= equal && value >= equal - epsilon);
-//    return fabs(value) < epsilon;
 }
 
 double doDichotomy(Function &function, double leftBorder, double rightBorder,
@@ -99,7 +101,8 @@ double doDichotomy(Function &function, double leftBorder, double rightBorder,
 
     while (true) {
         double funcValue = function.value(currentX) * reverseFuncValue;
-         if (isInInterval(funcValue, equalNumber, epsilon)) {
+         if (isInInterval(funcValue, equalNumber, epsilon) ||
+                fabs(function.value(leftBorder) - function.value(rightBorder)) <= 10e-14) {
             return currentX;
         } else if (funcValue > equalNumber) {
             rightBorder = currentX;
@@ -112,7 +115,6 @@ double doDichotomy(Function &function, double leftBorder, double rightBorder,
 }
 
 double goToLeft(double rightBorder, Function &function, double de, double e) {
-//    int power = 1;
     double prevShift;
     double shift = rightBorder;
     double funcValue;
@@ -269,7 +271,7 @@ vector<double> solveCubEquation(Function &function, double de, double e) {
 
 int main() {
     fstream fileIn;
-    fileIn.open("dav.txt", fstream::in);
+    fileIn.open("vegner.txt", fstream::in);
     FILE *fileOut = fopen("res.txt", "w");
 
     if (!fileIn.is_open() || fileOut == NULL) {
@@ -279,9 +281,23 @@ int main() {
 
     string line;
     double b, c, d, de, e;
+//    for (int i = 0; i < 1; i++) {
+//        getline(fileIn, line);
     while (getline(fileIn, line)) {
         istringstream iss(line);
         iss >> b >> c >> d >> de >> e;
+
+        /*const regex numberRegex("(-?[\\d]+,?)");
+        std::smatch base_match;
+        regex_match(line, base_match, numberRegex);
+
+        cout << base_match[0].str();
+
+        b = stoi(base_match[0]);
+        c = stoi(base_match[1]);
+        d = stoi(base_match[2]);
+        de = stoi(base_match[3]);
+        e = stoi(base_match[4]);*/
 
         CubFunction cubFunction = CubFunction(1, b, c, d);
         vector<double> rootList = solveCubEquation(cubFunction, de, e);
