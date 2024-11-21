@@ -1,15 +1,8 @@
-#include <iostream>
+#ifndef SPLINE_H
+#define SPLINE_H
+
 #include <math.h>
-
-using namespace std;
-
-class ModuleFunc {
-
-public:
-    double value(double x) {
-        return abs(x);
-    }
-};
+#include "ModuleFunc.h"
 
 class Spline {
 
@@ -38,7 +31,7 @@ public:
         return ci + di * hi;
     }
 
-    double setNextSplineRatio(double ai, double bi, double ci, double di) {
+    void setNextSplineRatio(double ai, double bi, double ci, double di) {
         this->ai = ai;
         this->bi = bi;
         this->ci = ci;
@@ -51,17 +44,7 @@ public:
 };
 
 double createSpline(Spline &spline, ModuleFunc &moduleFunc) {
-
-}
-
-int main() {
-    Spline spline;
-    ModuleFunc moduleFunc;
-
-    double a = -1;
-    double b = 1;
-    int pointsNumber = 5;
-
-    double hi = (abs(a) + abs(b)) / abs(pointsNumber);
     return 0;
 }
+
+#endif
