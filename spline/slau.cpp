@@ -22,7 +22,7 @@ int main() {
             {1.0, 3.0, 2.0},
             {1.0, 4.0, 0.0}
     };
-    vector<double> equations = { 5.0, 1.0, 11.0 };
+    vector<double> equations = { 5.0, 10.0, 11.0 };
 
     vector<double> roots = findRootsByRunThroughMethod(abcRatio, equations);
 

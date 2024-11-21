@@ -21,9 +21,9 @@ vector<double> findRootsByRunThroughMethod(vector<vector<double>> &abcRatio, vec
         double b_i = abcRatio[i][1];
         double c_i = abcRatio[i][2];
 
-        double denominator = b_i - a_i * alphaVector[i - 1];
+        double denominator = b_i + a_i * alphaVector[i - 1];
 
-        alphaVector[i] = c_i / denominator;
+        alphaVector[i] = -c_i / denominator;
         betaVector[i] = (d[i] - a_i * betaVector[i - 1]) / denominator;
     }
 
