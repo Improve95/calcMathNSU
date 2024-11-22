@@ -18,11 +18,12 @@ int main() {
     double hi = (abs(a) + abs(b)) / abs(pointsNumber - 1);*/
 
     vector<vector<double>> abcRatio = {
-            {0.0, 2.0, 1.0},
-            {1.0, 4.0, 2.0},
-            {1.0, 5.0, 0.0},
+            {0.0, 5.0, 4.0},
+            {3.0, 6.0, 2.0},
+            {1.0, 3.0, 1.0},
+            {5.0, 7.0, 0.0}
     };
-    vector<double> equations = { 5.0, 10.0, 11.0 };
+    vector<double> equations = { 4.0, 3.0, 2.0, 1.0 };
 
     vector<double> roots = findRootsByRunThroughMethod(abcRatio, equations);
 
