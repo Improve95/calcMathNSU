@@ -12,42 +12,6 @@ public:
     }
 };
 
-
-class Spline {
-
-private:
-    double ai;
-    double bi;
-    double ci;
-    double di;
-
-    double hi;
-
-public:
-    void setHi(double hi) {
-        this->hi = hi;
-    }
-
-    double spline() {
-        return ai + bi * hi + ci * pow(hi, 2) + di * pow(hi, 3);
-    }
-
-    double der1() {
-        return bi + 2 * ci * hi + 3 * di * pow(hi, 2);
-    }
-
-    double der2() {
-        return 2 * ci + 6 *  di * hi;
-    }
-
-    void setNextSplineRatio(double ai, double bi, double ci, double di) {
-        this->ai = ai;
-        this->bi = bi;
-        this->ci = ci;
-        this->di = di;
-    }
-};
-
 vector<vector<double>> findAbcdSplineRatio(vector<double> &cVector) {
 
 }
@@ -57,11 +21,6 @@ vector<double> findCVector(double a, double b, double intervalNumber) {
     vector<double> points;
     for (int i = 0; i < intervalNumber + 1; i++) {
         points.push_back(a + h_i * i);
-    }
-
-    vector<Spline> splineVector(intervalNumber);
-    for (auto spline : splineVector) {
-        spline.setHi(h_i);
     }
 
     ModuleFunc moduleFunc;
@@ -99,7 +58,8 @@ int main() {
     double b = 1;
     int intervalNumber = 4;
 
-    findCVector(a, b, intervalNumber);
+    vector<double> cVector = findCVector(a, b, intervalNumber);
+    vector<vector<double>> abcdRatio = findAbcdSplineRatio(cVector);
 
     return 0;
 }
