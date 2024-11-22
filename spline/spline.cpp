@@ -115,8 +115,9 @@ int main() {
 
         vector<vector<double>> splines = createSplines(a, b, intervalNumber, moduleFunc);
 
+        int pointIndex = 0;
         for (auto splineRatio : splines) {
-            double point = points[i];
+            double point = points[pointIndex++];
             fprintf(fileOut, "(%f) + (%f*(x - (%f))) + (%f*(x - (%f))^2 / 2) + (%f*(x - (%f))^3 / 6)\n",
                     splineRatio[0], splineRatio[1], point, splineRatio[2], point, splineRatio[3], point);
         }
