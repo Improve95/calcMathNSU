@@ -13,10 +13,10 @@ vector<double> findRootsByRunThroughMethod(vector<vector<double>> &abcRatio, vec
     vector<double> alphaVector(matrixSize, 0);
     vector<double> betaVector(matrixSize, 0);
 
-    alphaVector[0] = abcRatio[0][2] / abcRatio[0][1];
+    alphaVector[0] = -abcRatio[0][2] / abcRatio[0][1];
     betaVector[0] = d[0] / abcRatio[0][1];
 
-    for (int i = 1; i < matrixSize ; i++) {
+    for (int i = 1; i < matrixSize; i++) {
         double a_i = abcRatio[i][0];
         double b_i = abcRatio[i][1];
         double c_i = abcRatio[i][2];
