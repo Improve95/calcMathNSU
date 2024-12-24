@@ -1,51 +1,86 @@
 from abc import ABC, abstractmethod
+import numpy as np
 import math
 from math import sin, pow
 
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 
+class Graphic():
+    def __init__(self, data: str, coords: list):
+        self.data = data
+        self.coords = coords
+
 class Function(ABC):
     @abstractmethod
-    def value(self, x):
+    def value(x):
         pass
 
 class Sinus(Function):
-    def value(self, x):
+    def value(x):
         return sin(2 * math.pi * (x + 5) / 10)
 
-def drawGraphics():
+class Task(ABC):
+    @abstractmethod
+    def task(x):
+        pass
+
+class FirstTask(Function):
+    def value(x):
+        return x;
+
+def drawGraphics(graphics):
     pdf_file = "graphs.pdf"
     with PdfPages(pdf_file) as pdf:
-        plt.figure(figsize=(6, 4))
-        x = [1, 2, 3, 4, 5]
-        y = [2, 4, 6, 8, 10]
-        plt.plot(x, y, label='y = 2x', color='blue')
-        plt.title("First Plot")
-        plt.xlabel("X-axis")
-        plt.ylabel("Y-axis")
-        plt.legend()
-        plt.grid()
-        pdf.savefig()
-        plt.close()
+        for graphic in graphics:
+            plt.figure(figsize=(6, 4))
+            plt.plot(graphic.coords, label='sin', color='blue')
+            plt.title(graphic.data)
+            plt.legend()
+            plt.grid()
+            pdf.savefig()
+            plt.close()
 
-    print(f"Графики сохранены в файл: {pdf_file}")
+def forwardDifference(tao, h, N, k):
+    k = int(k)
+    coords = np.zeros((N + 1, k + 1))
 
-def calcNextUj():
-    pass
+    for j in range(N):
+        coords[j][0] = Sinus.value(j * h)
 
-def calcNextFj():
-    pass
+    for j in range (N):
+        for n in range (k):
+            coords[j][n + 1] = -(tao / h) * (coords[j + 1][n] - coords[j][n]) + coords[j][n]
+
+    return coords
 
 def main():
     a, b = 0.0, 10.0
-    n1, n2 = 100, 1000
-    h1, h2 = (b - a) / float(n1), (b - a) / float(n2)
+    N12 = [100, 1000]
+    T12 = [1.0, 2.0]
+    graphics = []
 
-    t11, t12, t13, t14 = 0.25 * h1, 0.5 * h1, 1.0 * h1, 1.25 * h1
-    t21, t22, t23, t24 = 0.25 * h2, 0.5 * h2, 1.0 * h2, 1.25 * h2
+    for N_iter in range(2):
+        N = N12[N_iter]
 
-    drawGraphics()
+        for T_iter in range(2):
+            T = T12[T_iter]
+            h = (b - a) / float(N)
+            
+            for task_iter in range(1):
+
+                multiplier = 0.0
+                for kt in range(4):
+                    multiplier += 0.25
+                    tao = h / 4 * multiplier
+                    k = T / tao
+
+                    graphicData = f"N = {N}, T = {T}, h = {h}, tao = {tao}, k = {k}"
+                    coords = forwardDifference(tao, h, N, k)
+                    graphic = Graphic(graphicData, coords)
+                    graphics.append(graphic)
+
+    # drawGraphics(graphics)
 
 if __name__ == '__main__':
     main()
