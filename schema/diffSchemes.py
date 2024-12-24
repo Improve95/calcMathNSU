@@ -18,7 +18,7 @@ class Function(ABC):
 
 class Sinus(Function):
     def value(x):
-        return sin(2 * math.pi * (x + 5) / 10)
+        return sin(2 * math.pi * (x + 5) / 10) + 3
 
 class Task(ABC):
     @abstractmethod
@@ -34,7 +34,12 @@ def drawGraphics(graphics):
     with PdfPages(pdf_file) as pdf:
         for graphic in graphics:
             plt.figure(figsize=(6, 4))
-            plt.plot(graphic.coords, label='sin', color='blue')
+
+            xCoords, yCoords = [], []
+            for coord in graphic.coors:
+                coord
+
+            plt.plot(, label='sin', color='blue')
             plt.title(graphic.data)
             plt.legend()
             plt.grid()
@@ -48,9 +53,9 @@ def forwardDifference(tao, h, N, k):
     for j in range(N):
         coords[j][0] = Sinus.value(j * h)
 
-    for j in range (N):
-        for n in range (k):
-            coords[j][n + 1] = -(tao / h) * (coords[j + 1][n] - coords[j][n]) + coords[j][n]
+    for n in range (k - 1):
+        for j in range (N):
+            coords[j][n + 1] = (-1) * (tao / h) * (coords[j + 1][n] - coords[j][n]) + coords[j][n]
 
     return coords
 
@@ -60,19 +65,19 @@ def main():
     T12 = [1.0, 2.0]
     graphics = []
 
-    for N_iter in range(2):
+    for N_iter in range(1):
         N = N12[N_iter]
 
-        for T_iter in range(2):
+        for T_iter in range(1):
             T = T12[T_iter]
             h = (b - a) / float(N)
             
             for task_iter in range(1):
 
                 multiplier = 0.0
-                for kt in range(4):
+                for kt in range(1):
                     multiplier += 0.25
-                    tao = h / 4 * multiplier
+                    tao = h * multiplier
                     k = T / tao
 
                     graphicData = f"N = {N}, T = {T}, h = {h}, tao = {tao}, k = {k}"
@@ -80,7 +85,7 @@ def main():
                     graphic = Graphic(graphicData, coords)
                     graphics.append(graphic)
 
-    # drawGraphics(graphics)
+    drawGraphics(graphics)
 
 if __name__ == '__main__':
     main()
