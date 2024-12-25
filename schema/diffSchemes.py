@@ -32,16 +32,18 @@ def forwardTask1(j, n, tao, h, N, coords):
     return (-1) * (tao / h) * (coords[(j + 1) % N][n] - coords[j][n]) + coords[j][n]
 
 def forwardTask2(j, n, tao, h, N, coords):
-    try:
-        res = (-1) * (tao / h) * (pow(coords[(j + 1) % N][n], 2) / 2 - pow(coords[j][n], 2) / 2) + coords[j][n]
-    except OverflowError:
-        res = float('inf')
-    
-    return res
+    return (-1) * (tao / h) * (pow(coords[(j + 1) % N][n], 2) / 2 - pow(coords[j][n], 2) / 2) + coords[j][n]
 
+def godunovTask1(j, n, tao, h, N, coords):
+    return (-1) * (tao / h) * (coords[j][n] - coords[(j - 1) % N][n]) + coords[j][n]
 
+def godunovTask2(j, n, tao, h, N, coords):
+    return (-1) * (tao / h) * (pow(coords[j][n], 2) / 2 - pow(coords[(j - 1) % N][n], 2) / 2) + coords[j][n]
 
-def calculateGraph(tao, h, N, k, method):
+def rusanovTask1():
+    pass
+
+def calculateGraphs(tao, h, N, k, method):
     k = int(k)
     coords = np.zeros((N + 1, k))
 
@@ -51,7 +53,11 @@ def calculateGraph(tao, h, N, k, method):
     xcs, ycs = [], []
     for n in range (k - 1):
         for j in range (N):
-            coords[j][n + 1] = method(j, n, tao, h, N, coords)
+            try:
+                res = method(j, n, tao, h, N, coords)
+            except OverflowError:
+                res = float('inf')
+            coords[j][n + 1] = res
 
     for j in range(N):
         xcs.append(j * h)
@@ -75,7 +81,7 @@ def calculateGraphsWithAnyParameters(a, b, N12, T12, info: str, method):
                 k = T / tao
 
                 graphData = f"{info}: N = {N}, T = {T}, h = {h}, tao = {round(tao, 4)}, k = {round(k, 4)}"
-                xcs, ycs = calculateGraph(tao, h, N, k, method)
+                xcs, ycs = calculateGraphs(tao, h, N, k, method)
                 graph = Graph(graphData, xcs, ycs)
                 graphs.append(graph)
     
@@ -88,13 +94,12 @@ def main():
 
     totalGraphs = []
 
-    totalGraphs += calculateGraphsWithAnyParameters(a, b, N12, T12, "forward - t1", forwardTask1)
-    # totalGraphs += calculateGraphsWithAnyParameters(a, b, N12, T12, "forward - t2", forwardTask2)
+    totalGraphs += calculateGraphsWithAnyParameters(a, b, N12, T12, "forward-t1", forwardTask1)
+    # totalGraphs += calculateGraphsWithAnyParameters(a, b, N12, T12, "forward-t2", forwardTask2)
+    totalGraphs += calculateGraphsWithAnyParameters(a, b, N12, [0.22, 0.25], "forward-t2", forwardTask2)
 
-    T12_f2 = [0.22, 0.25]
-    totalGraphs += calculateGraphsWithAnyParameters(a, b, N12, T12_f2, "forward - t2", forwardTask2)
-
-    
+    totalGraphs += calculateGraphsWithAnyParameters(a, b, N12, T12, "godunov-t1", godunovTask1)
+    totalGraphs += calculateGraphsWithAnyParameters(a, b, N12, T12, "godunov-t2", godunovTask2)
 
     drawGraphs(totalGraphs)
 
