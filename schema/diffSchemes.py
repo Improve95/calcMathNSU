@@ -82,31 +82,32 @@ def calculateGraphs(tao, h, N, k, method):
                 res = method(j, n, tao, h, N, coords)
             except OverflowError:
                 res = float('inf')
-                # for j in range(N):
-                    # xcs.append(j * h)
-                    # ycs.append(coords[j][k - 1])
-                    # return xcs, ycs
+                return xcs, ycs
                 
             coords[j][n + 1] = res
 
+    for j in range(N):
+        xcs.append(j * h)
+        ycs.append(coords[j][k - 1])
+
     return xcs, ycs
 
-def calculateGraphsWithAnyParameters(a, b, N12, T12, info: str, method):
+def calculateGraphsWithAnyParameters(a, b, N12, T12, info: str, task, method):
     graphs = []
-    for N_iter in range(1):
-        N = N12[N_iter]
-
-        for T_iter in range(2):
-            T = T12[T_iter]
+    for N in N12:
+        for T in T12:
             h = (b - a) / float(N)
             multiplier = 0.0
 
             for kt in range(4):
                 multiplier += 0.25
-                tao = h * multiplier
+                if (task == 1):
+                    tao = h * multiplier
+                else:
+                    tao = h * multiplier / 4
                 k = T / tao
 
-                graphData = f"{info}: N = {N}, T = {T}, h = {h}, tao = {round(tao, 4)}, k = {round(k, 4)}"
+                graphData = f"{info}: N={N}, T={T}, h={h}, tao={round(tao, 6)}, k={round(k, 2)}"
                 xcs, ycs = calculateGraphs(tao, h, N, k, method)
                 graph = Graph(graphData, xcs, ycs)
                 graphs.append(graph)
@@ -120,15 +121,14 @@ def main():
 
     totalGraphs = []
 
-    # totalGraphs += calculateGraphsWithAnyParameters(a, b, N12, T12, "forward-t1", forwardTask1)
-    # totalGraphs += calculateGraphsWithAnyParameters(a, b, N12, T12, "forward-t2", forwardTask2)
-    # totalGraphs += calculateGraphsWithAnyParameters(a, b, N12, [0.22, 0.25], "forward-t2", forwardTask2)
+    totalGraphs += calculateGraphsWithAnyParameters(a, b, N12, T12, "forward-t1", 1, forwardTask1)
+    totalGraphs += calculateGraphsWithAnyParameters(a, b, N12, [0.22, 0.25], "forward-t2", 2, forwardTask2)
 
-    # totalGraphs += calculateGraphsWithAnyParameters(a, b, N12, T12, "godunov-t1", godunovTask1)
-    # totalGraphs += calculateGraphsWithAnyParameters(a, b, N12, T12, "godunov-t2", godunovTask2)
+    totalGraphs += calculateGraphsWithAnyParameters(a, b, N12, T12, "godunov-t1", 1, godunovTask1)
+    totalGraphs += calculateGraphsWithAnyParameters(a, b, N12, T12, "godunov-t2", 2, godunovTask2)
 
-    totalGraphs += calculateGraphsWithAnyParameters(a, b, N12, T12, "rusanov-t1", rusanovTask1)
-    # totalGraphs += calculateGraphsWithAnyParameters(a, b, N12, T12, "rusanov-t2", rusanovTask2)
+    totalGraphs += calculateGraphsWithAnyParameters(a, b, N12, T12, "rusanov-t1", 1, rusanovTask1)
+    totalGraphs += calculateGraphsWithAnyParameters(a, b, N12, T12, "rusanov-t2", 2, rusanovTask2)
 
     drawGraphs(totalGraphs)
 
