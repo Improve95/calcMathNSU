@@ -1,4 +1,3 @@
-from abc import ABC, abstractmethod
 import numpy as np
 import math
 from math import sin, pow
@@ -41,23 +40,33 @@ def godunovTask2(j, n, tao, h, N, coords):
     return (-1) * (tao / h) * (pow(coords[j][n], 2) / 2 - pow(coords[(j - 1) % N][n], 2) / 2) + coords[j][n]
 
 
-def calcWj(j, n, N, cs):
-    res = cs[(j + 2) % N][n] - 4 * cs[(j + 1) % N][n] + 6 * cs[j % N][n] - 4 * cs[(j - 1) % N][n] + cs[(j - 2) % N][n]
-    return res
+def calcWj_t1(j, n, N, cs):
+    return cs[(j + 2) % N][n] - 4 * cs[(j + 1) % N][n] + 6 * cs[j % N][n] - 4 * cs[(j - 1) % N][n] + cs[(j - 2) % N][n]
 
-def calcF12(j, n, r, N, cs):
-    res = (cs[j % N][n] + cs[(j + 1) % N][n]) / 2 - r / 3 * (cs[(j + 1) % N][n] - cs[j % N][n])
-    return res
+def calcF12_t1(j, n, r, N, cs):
+    return (cs[j % N][n] + cs[(j + 1) % N][n]) / 2 - r / 3 * (cs[(j + 1) % N][n] - cs[j % N][n])
 
-def calcF2(j, n, r, N, cs):
-    res = cs[j % N][n] - 2 * r / 3 * (calcF12(j, n, r, N, cs) - calcF12(j - 1, n, r, N, cs))
-    return res
+def calcF2_t1(j, n, r, N, cs):
+    return cs[j % N][n] - 2 * r / 3 * (calcF12_t1(j, n, r, N, cs) - calcF12_t1(j - 1, n, r, N, cs))
 
 def rusanovTask1(j, n, tao, h, N, cs):
     r = tao / h
     return cs[j][n] - r / 24.0 * (7 * (cs[(j + 1) % N][n] - cs[(j - 1) % N][n]) - 2 * (cs[(j + 2) % N][n] - cs[(j - 2) % N][n])) \
-            - 3 / 8 * r * (calcF12(j + 1, n, r, N, cs) - calcF12(j - 1, n, r, N, cs)) - 0.104 * calcWj(j, n, N, cs)
+            - 3 / 8 * r * (calcF12_t1(j + 1, n, r, N, cs) - calcF12_t1(j - 1, n, r, N, cs)) - 0.104 * calcWj_t1(j, n, N, cs)
 
+def calcWj_t2(j, n, N, cs):
+    return cs[(j + 2) % N][n] - 4 * cs[(j + 1) % N][n] + 6 * cs[j % N][n] - 4 * cs[(j - 1) % N][n] + cs[(j - 2) % N][n]
+
+def calcF12_t2(j, n, r, N, cs):
+    return (cs[j % N][n] + cs[(j + 1) % N][n]) / 2 - r / 3 * (pow(cs[(j + 1) % N][n], 2) / 2 - pow(cs[j % N][n], 2) / 2)
+
+def calcF2_t2(j, n, r, N, cs):
+    return cs[j % N][n] - 2 * r / 3 * (pow(calcF12_t2(j, n, r, N, cs), 2) / 2 - pow(calcF12_t2(j - 1, n, r, N, cs), 2) / 2)
+
+def rusanovTask2(j, n, tao, h, N, cs):
+    r = tao / h
+    return cs[j][n] - r / 24.0 * (7 * (pow(cs[(j + 1) % N][n], 2) / 2 - pow(cs[(j - 1) % N][n], 2) / 2) - 2 * (pow(cs[(j + 2) % N][n], 2) / 2 - pow(cs[(j - 2) % N][n], 2) / 2)) \
+            - 3 / 8 * r * (pow(calcF12_t2(j + 1, n, r, N, cs), 2) / 2 - pow(calcF12_t2(j - 1, n, r, N, cs), 2) / 2) - 0.104 * calcWj_t2(j, n, N, cs)
 
 def calculateGraphs(tao, h, N, k, method):
     k = int(k)
@@ -73,11 +82,12 @@ def calculateGraphs(tao, h, N, k, method):
                 res = method(j, n, tao, h, N, coords)
             except OverflowError:
                 res = float('inf')
+                # for j in range(N):
+                    # xcs.append(j * h)
+                    # ycs.append(coords[j][k - 1])
+                    # return xcs, ycs
+                
             coords[j][n + 1] = res
-
-    for j in range(N):
-        xcs.append(j * h)
-        ycs.append(coords[j][k - 1])
 
     return xcs, ycs
 
@@ -118,6 +128,7 @@ def main():
     # totalGraphs += calculateGraphsWithAnyParameters(a, b, N12, T12, "godunov-t2", godunovTask2)
 
     totalGraphs += calculateGraphsWithAnyParameters(a, b, N12, T12, "rusanov-t1", rusanovTask1)
+    # totalGraphs += calculateGraphsWithAnyParameters(a, b, N12, T12, "rusanov-t2", rusanovTask2)
 
     drawGraphs(totalGraphs)
 
