@@ -7,9 +7,10 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 
 class Graphic():
-    def __init__(self, data: str, coords: list):
+    def __init__(self, data: str, xCoords: list, yCoords: list):
         self.data = data
-        self.coords = coords
+        self.xCoords = xCoords
+        self.yCoords = yCoords
 
 class Function(ABC):
     @abstractmethod
@@ -20,26 +21,13 @@ class Sinus(Function):
     def value(x):
         return sin(2 * math.pi * (x + 5) / 10) + 3
 
-class Task(ABC):
-    @abstractmethod
-    def task(x):
-        pass
-
-class FirstTask(Function):
-    def value(x):
-        return x;
-
 def drawGraphics(graphics):
     pdf_file = "graphs.pdf"
     with PdfPages(pdf_file) as pdf:
         for graphic in graphics:
             plt.figure(figsize=(6, 4))
 
-            xCoords, yCoords = [], []
-            for coord in graphic.coors:
-                coord
-
-            plt.plot(, label='sin', color='blue')
+            plt.plot(graphic.xCoords, graphic.yCoords, label='sin', color='blue')
             plt.title(graphic.data)
             plt.legend()
             plt.grid()
@@ -48,16 +36,22 @@ def drawGraphics(graphics):
 
 def forwardDifference(tao, h, N, k):
     k = int(k)
-    coords = np.zeros((N + 1, k + 1))
+    coords = np.zeros((N + 1, k))
 
     for j in range(N):
         coords[j][0] = Sinus.value(j * h)
+
+    xcs, ycs = [], []
 
     for n in range (k - 1):
         for j in range (N):
             coords[j][n + 1] = (-1) * (tao / h) * (coords[j + 1][n] - coords[j][n]) + coords[j][n]
 
-    return coords
+            if (n == k - 2):
+                xcs.append(j)
+                ycs.append(coords[j][n + 1])
+
+    return xcs, ycs
 
 def main():
     a, b = 0.0, 10.0
@@ -81,8 +75,8 @@ def main():
                     k = T / tao
 
                     graphicData = f"N = {N}, T = {T}, h = {h}, tao = {tao}, k = {k}"
-                    coords = forwardDifference(tao, h, N, k)
-                    graphic = Graphic(graphicData, coords)
+                    xcs, ycs = forwardDifference(tao, h, N, k)
+                    graphic = Graphic(graphicData, xcs, ycs)
                     graphics.append(graphic)
 
     drawGraphics(graphics)
