@@ -28,31 +28,20 @@ def drawGraphs(graphs):
             pdf.savefig()
             plt.close()
 
-def calculateGraphsWithAnyParameters(a, b, N12, T12, info: str, method):
-    graphs = []
-    for N_iter in range(1):
-        N = N12[N_iter]
+def forwardTask1(j, n, tao, h, N, coords):
+    return (-1) * (tao / h) * (coords[(j + 1) % N][n] - coords[j][n]) + coords[j][n]
 
-        for T_iter in range(1):
-            T = T12[T_iter]
-            h = (b - a) / float(N)
-
-            for task_iter in range(1):
-                
-                multiplier = 0.0
-                for kt in range(1):
-                    multiplier += 0.25
-                    tao = h * multiplier
-                    k = T / tao
-
-                    graphData = f"{info}: N = {N}, T = {T}, h = {h}, tao = {tao}, k = {k}"
-                    xcs, ycs = method(tao, h, N, k)
-                    graph = Graph(graphData, xcs, ycs)
-                    graphs.append(graph)
+def forwardTask2(j, n, tao, h, N, coords):
+    try:
+        res = (-1) * (tao / h) * (pow(coords[(j + 1) % N][n], 2) / 2 - pow(coords[j][n], 2) / 2) + coords[j][n]
+    except OverflowError:
+        res = float('inf')
     
-    return graphs
+    return res
 
-def calculateGraph(tao, h, N, k):
+
+
+def calculateGraph(tao, h, N, k, method):
     k = int(k)
     coords = np.zeros((N + 1, k))
 
@@ -62,13 +51,35 @@ def calculateGraph(tao, h, N, k):
     xcs, ycs = [], []
     for n in range (k - 1):
         for j in range (N):
-            coords[j][n + 1] = (-1) * (tao / h) * (coords[(j + 1) % N][n] - coords[j][n % N]) + coords[j][n % N]
+            coords[j][n + 1] = method(j, n, tao, h, N, coords)
 
     for j in range(N):
         xcs.append(j * h)
         ycs.append(coords[j][k - 1])
 
     return xcs, ycs
+
+def calculateGraphsWithAnyParameters(a, b, N12, T12, info: str, method):
+    graphs = []
+    for N_iter in range(1):
+        N = N12[N_iter]
+
+        for T_iter in range(2):
+            T = T12[T_iter]
+            h = (b - a) / float(N)
+            multiplier = 0.0
+
+            for kt in range(4):
+                multiplier += 0.25
+                tao = h * multiplier
+                k = T / tao
+
+                graphData = f"{info}: N = {N}, T = {T}, h = {h}, tao = {round(tao, 4)}, k = {round(k, 4)}"
+                xcs, ycs = calculateGraph(tao, h, N, k, method)
+                graph = Graph(graphData, xcs, ycs)
+                graphs.append(graph)
+    
+    return graphs
 
 def main():
     a, b = 0.0, 10.0
@@ -77,10 +88,15 @@ def main():
 
     totalGraphs = []
 
-    graphs = calculateGraphsWithAnyParameters(a, b, N12, T12, "forward - task1", calculateGraph)
-    totalGraphs.append(graphs)
+    totalGraphs += calculateGraphsWithAnyParameters(a, b, N12, T12, "forward - t1", forwardTask1)
+    # totalGraphs += calculateGraphsWithAnyParameters(a, b, N12, T12, "forward - t2", forwardTask2)
 
-    drawGraphs(graphs)
+    T12_f2 = [0.22, 0.25]
+    totalGraphs += calculateGraphsWithAnyParameters(a, b, N12, T12_f2, "forward - t2", forwardTask2)
+
+    
+
+    drawGraphs(totalGraphs)
 
 if __name__ == '__main__':
     main()
