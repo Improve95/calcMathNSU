@@ -27,7 +27,7 @@ def drawGraphics(graphics):
         for graphic in graphics:
             plt.figure(figsize=(6, 4))
 
-            plt.plot(graphic.xCoords, graphic.yCoords, label='sin', color='blue')
+            plt.plot(graphic.xCoords[0:80], graphic.yCoords[0:80], label='sin', color='blue')
             plt.title(graphic.data)
             plt.legend()
             plt.grid()
@@ -49,7 +49,7 @@ def forwardDifference(tao, h, N, k):
 
             if (n == k - 2):
                 xcs.append(j)
-                ycs.append(coords[j][n + 1])
+                ycs.append(float(coords[j][n + 1]))
 
     return xcs, ycs
 
@@ -79,6 +79,8 @@ def main():
                     graphic = Graphic(graphicData, xcs, ycs)
                     graphics.append(graphic)
 
+    # print(xcs)
+    # print(ycs)
     drawGraphics(graphics)
 
 if __name__ == '__main__':
