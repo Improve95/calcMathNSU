@@ -40,8 +40,24 @@ def godunovTask1(j, n, tao, h, N, coords):
 def godunovTask2(j, n, tao, h, N, coords):
     return (-1) * (tao / h) * (pow(coords[j][n], 2) / 2 - pow(coords[(j - 1) % N][n], 2) / 2) + coords[j][n]
 
-def rusanovTask1():
-    pass
+
+def calcWj(j, n, N, cs):
+    res = cs[(j + 2) % N][n] - 4 * cs[(j + 1) % N][n] + 6 * cs[j % N][n] - 4 * cs[(j - 1) % N][n] + cs[(j - 2) % N][n]
+    return res
+
+def calcF12(j, n, r, N, cs):
+    res = (cs[j % N][n] + cs[(j + 1) % N][n]) / 2 - r / 3 * (cs[(j + 1) % N][n] - cs[j % N][n])
+    return res
+
+def calcF2(j, n, r, N, cs):
+    res = cs[j % N][n] - 2 * r / 3 * (calcF12(j, n, r, N, cs) - calcF12(j - 1, n, r, N, cs))
+    return res
+
+def rusanovTask1(j, n, tao, h, N, cs):
+    r = tao / h
+    return cs[j][n] - r / 24.0 * (7 * (cs[(j + 1) % N][n] - cs[(j - 1) % N][n]) - 2 * (cs[(j + 2) % N][n] - cs[(j - 2) % N][n])) \
+            - 3 / 8 * r * (calcF12(j + 1, n, r, N, cs) - calcF12(j - 1, n, r, N, cs)) - 0.104 * calcWj(j, n, N, cs)
+
 
 def calculateGraphs(tao, h, N, k, method):
     k = int(k)
@@ -94,12 +110,14 @@ def main():
 
     totalGraphs = []
 
-    totalGraphs += calculateGraphsWithAnyParameters(a, b, N12, T12, "forward-t1", forwardTask1)
+    # totalGraphs += calculateGraphsWithAnyParameters(a, b, N12, T12, "forward-t1", forwardTask1)
     # totalGraphs += calculateGraphsWithAnyParameters(a, b, N12, T12, "forward-t2", forwardTask2)
-    totalGraphs += calculateGraphsWithAnyParameters(a, b, N12, [0.22, 0.25], "forward-t2", forwardTask2)
+    # totalGraphs += calculateGraphsWithAnyParameters(a, b, N12, [0.22, 0.25], "forward-t2", forwardTask2)
 
-    totalGraphs += calculateGraphsWithAnyParameters(a, b, N12, T12, "godunov-t1", godunovTask1)
-    totalGraphs += calculateGraphsWithAnyParameters(a, b, N12, T12, "godunov-t2", godunovTask2)
+    # totalGraphs += calculateGraphsWithAnyParameters(a, b, N12, T12, "godunov-t1", godunovTask1)
+    # totalGraphs += calculateGraphsWithAnyParameters(a, b, N12, T12, "godunov-t2", godunovTask2)
+
+    totalGraphs += calculateGraphsWithAnyParameters(a, b, N12, T12, "rusanov-t1", rusanovTask1)
 
     drawGraphs(totalGraphs)
 
